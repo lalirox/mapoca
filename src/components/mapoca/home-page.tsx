@@ -30,7 +30,7 @@ import { DefenseDetail, DefenseStage } from "@/components/mapoca/defense";
 export function HomePage({ servicio }: { servicio?: string }) {
   const hero = heroFor(servicio);
   const focus = lineById(hero.lineId);
-  const [picked, setPicked] = useState<string | undefined>(focus?.name);
+  const [picked, setPicked] = useState<string | undefined>(hero.interest ?? focus?.name);
   const onRecommend = useCallback((name: string) => setPicked(name), []);
 
   return (

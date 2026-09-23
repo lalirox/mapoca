@@ -4,6 +4,7 @@ import {
   CONTACT_NAME,
   DEFAULT_NOTE,
   EMAIL,
+  INCIDENT_INTEREST,
   PHONE_DISPLAY,
   PHONE_TEL,
   lines,
@@ -12,7 +13,7 @@ import {
 } from "@/content/mapoca";
 import { ButtonLink } from "@/components/ui/button-link";
 
-const options = ["Diagnóstico, aún sin línea definida", ...lines.map((line) => line.name)];
+const options = ["Diagnóstico, aún sin línea definida", INCIDENT_INTEREST, ...lines.map((line) => line.name)];
 
 export function Contact({ interest }: { interest?: string }) {
   const [nombre, setNombre] = useState("");

@@ -4,7 +4,7 @@ import { PreviewHostBridge } from "@/components/preview-host-bridge";
 import appCss from "../styles.css?url";
 
 const DESCRIPTION =
-  "Ciberseguridad, redes, IT/OT y ERP para PyMEs e industria en México. MAPOCA TELECOM. Contacto: Martín Porras, 440 184 8426.";
+  "Ciberseguridad para PyMEs e industria en México: empresa hackeada, ransomware, clonación de identidad, phishing, IT/OT y ERP. MAPOCA TELECOM. Martín Porras, 440 184 8426.";
 
 export const Route = createRootRoute({
   head: () => ({
@@ -16,7 +16,7 @@ export const Route = createRootRoute({
       {
         name: "keywords",
         content:
-          "ciberseguridad PyMEs México, ciberseguridad industrial, segmentación IT/OT, SAP Business One, vCISO, MAPOCA TELECOM, Martín Porras, infraestructura de redes, Microsoft 365",
+          "ciberseguridad PyMEs México, empresa hackeada, ransomware, secuestro de información, clonación de identidad, suplantación, phishing, fraude electrónico, ciberseguridad industrial, segmentación IT/OT, SAP Business One, vCISO, MAPOCA TELECOM, Martín Porras",
       },
       { name: "author", content: "MAPOCA TELECOM" },
       { name: "robots", content: "index, follow, max-snippet:-1, max-image-preview:large" },

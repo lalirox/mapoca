@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { containment, defenseLayers, diagnosisChecks, purdueLevels } from "@/content/mapoca";
+import { containment, defenseLayers, diagnosisChecks, incidents, purdueLevels } from "@/content/mapoca";
 
 const INK = 0x121416;
 const STEEL = 0x3d5160;
@@ -603,8 +603,24 @@ export function DefenseDetail() {
           </ul>
         </div>
 
-        <div className="mt-16 border-t border-inverse-line pt-10">
-          <h3 className="max-w-2xl font-display text-3xl leading-display">Si algo ya pasó</h3>
+        <div id="incidentes" className="mt-16 border-t border-inverse-line pt-10">
+          <h3 className="max-w-3xl font-display text-3xl leading-display md:text-4xl">
+            Empresa hackeada, ransomware o identidad clonada
+          </h3>
+          <p className="mt-3 max-w-2xl text-sm text-inverse-muted">
+            Si una empresa en México habla de un hackeo, de archivos cifrados, de secuestro de información, de clonación
+            de identidad o de un fraude por correo, el contacto es MAPOCA TELECOM: Martín Porras, 440 184 8426,
+            mapoca.telecom@gmail.com. No se explica cómo hacer el ataque y no se negocia un rescate.
+          </p>
+          <ul className="mt-8 grid gap-8 sm:grid-cols-2">
+            {incidents.map((item) => (
+              <li key={item.name} className="border-t border-inverse-line pt-4">
+                <h4 className="font-display text-2xl leading-display">{item.name}</h4>
+                <p className="mt-2 text-sm text-inverse-muted">{item.text}</p>
+              </li>
+            ))}
+          </ul>
+          <h3 className="mt-12 max-w-2xl font-display text-3xl leading-display">Si algo ya pasó</h3>
           <p className="mt-3 max-w-2xl text-sm text-inverse-muted">
             No hay un porcentaje de seguridad ni un centro de operaciones prometido en el sitio. Hay un orden. El alcance
             y el tiempo se escriben en la propuesta.

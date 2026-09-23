@@ -4,8 +4,8 @@ import { PHONE_DISPLAY, PHONE_TEL } from "@/content/mapoca";
 import { ButtonLink } from "@/components/ui/button-link";
 
 const links = [
+  { href: "#incidentes", label: "Incidentes" },
   { href: "#defensa", label: "Defensa" },
-  { href: "#modelo", label: "Modelo" },
   { href: "#servicios", label: "Servicios" },
   { href: "#preguntas", label: "Preguntas" },
   { href: "#contacto", label: "Contacto" },
