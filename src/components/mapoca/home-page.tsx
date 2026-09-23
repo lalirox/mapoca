@@ -38,7 +38,7 @@ export function HomePage({ servicio }: { servicio?: string }) {
       <div className="h-1 bg-ink" />
       <Header />
       <main id="contenido">
-        <section id="inicio" className="mx-auto grid max-w-6xl gap-12 px-5 py-12 lg:grid-cols-12 lg:items-end lg:py-16">
+        <section id="inicio" className="mx-auto grid max-w-6xl gap-12 px-5 py-12 lg:grid-cols-12 lg:items-start lg:py-16">
           <div className="lg:col-span-7">
             <p className="rise text-xs font-medium tracking-widest text-muted uppercase">{hero.kicker}</p>
             <h1 className="rise rise-2 mt-4 max-w-3xl font-display text-4xl leading-display md:text-5xl lg:text-6xl">

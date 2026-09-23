@@ -18,30 +18,98 @@ export const defenseLayers = [
     name: "Identidad",
     kicker: "Quién entra",
     text: "MFA, cuentas con el mínimo privilegio y un inventario de quién puede entrar, incluido el acceso remoto de proveedores.",
+    practices: [
+      "Segundo factor en correo, administración y acceso remoto",
+      "Cuentas nominativas: se retira el usuario compartido",
+      "El proveedor entra con plazo, no con una llave fija",
+    ],
   },
   {
     name: "Perímetro",
     kicker: "Qué se separa",
     text: "Firewall, VLAN y segmentación. La red de oficina no comparte camino con la planta ni con el sistema que factura.",
+    practices: [
+      "La oficina, el sistema que factura y la planta no van en la misma red",
+      "Firewall con reglas escritas, no con “todo permitido”",
+      "Un salto entre segmentos se justifica o se cierra",
+    ],
   },
   {
     name: "Superficie",
     kicker: "Qué queda expuesto",
     text: "Hardening y vulnerabilidades. Se cierra lo que nadie usa y se vigila lo que sí tiene que quedar a la vista.",
+    practices: [
+      "Se apaga el servicio que nadie administra",
+      "Las vulnerabilidades se ordenan por daño a la operación",
+      "Lo que debe verse —correo, portal, acceso remoto— se vigila",
+    ],
   },
   {
     name: "Continuidad",
     kicker: "Cómo se sigue",
     text: "Respaldos que se han restaurado, monitoreo y un orden claro para operar si un equipo se cifra o la red se cae.",
+    practices: [
+      "Un respaldo cuenta cuando alguien ya lo restauró",
+      "Se sabe qué se detiene si un equipo se cifra o se queda sin enlace",
+      "El seguimiento mensual no termina el día de la instalación",
+    ],
   },
 ];
 
 export const purdueLevels = [
-  { level: "4–5", name: "Empresa", text: "Correo, usuarios, ERP y el resto de la oficina." },
-  { level: "3.5", name: "DMZ", text: "El único cruce permitido entre la TI y la operación." },
-  { level: "3", name: "Sitio", text: "Supervisión, historiador o MES. Ve la planta sin vivir dentro de ella." },
-  { level: "1–2", name: "Control", text: "HMI, SCADA y controladores. El acceso remoto se justifica aquí, o no entra." },
-  { level: "0", name: "Proceso", text: "La máquina o la línea. No se apaga para ver qué pasa." },
+  {
+    level: "4–5",
+    name: "Empresa",
+    text: "Correo, usuarios, ERP y el resto de la oficina.",
+    gate: "El ruido de la oficina se queda en este piso.",
+  },
+  {
+    level: "3.5",
+    name: "DMZ",
+    text: "El único cruce permitido entre la TI y la operación.",
+    gate: "Lo que no está escrito como cruce no baja de aquí.",
+  },
+  {
+    level: "3",
+    name: "Sitio",
+    text: "Supervisión, historiador o MES. Ve la planta sin vivir dentro de ella.",
+    gate: "Supervisa. No comparte red con el controlador.",
+  },
+  {
+    level: "1–2",
+    name: "Control",
+    text: "HMI, SCADA y controladores. El acceso remoto se justifica aquí, o no entra.",
+    gate: "Un acceso remoto sin plazo es un hallazgo.",
+  },
+  {
+    level: "0",
+    name: "Proceso",
+    text: "La máquina o la línea. No se apaga para ver qué pasa.",
+    gate: "Aquí no se investiga. Se protege la continuidad.",
+  },
+];
+
+export const containment = [
+  {
+    n: "01",
+    t: "Cortar el camino",
+    d: "Se aísla el equipo o el segmento. En planta no se apaga el proceso para investigar.",
+  },
+  {
+    n: "02",
+    t: "Nombrar lo que paró",
+    d: "Se distingue oficina, facturación y operación. No todo incidente detiene lo mismo.",
+  },
+  {
+    n: "03",
+    t: "Volver desde una copia probada",
+    d: "Se restaura lo que ya se ensayó. Un respaldo que nunca se abrió no es continuidad.",
+  },
+  {
+    n: "04",
+    t: "Dejar el hallazgo escrito",
+    d: "Qué falló, qué se cambió y qué queda en el seguimiento mensual o en el roadmap.",
+  },
 ];
 
 export const diagnosisChecks = [
@@ -314,6 +382,10 @@ export const faqs: { q: string; a: string }[] = [
   {
     q: "¿Administra Microsoft 365, redes y respaldos?",
     a: "Sí. MAPOCA BUSINESS IT incluye soporte remoto y en sitio, Microsoft 365, usuarios y equipos, redes, respaldos, antivirus y gestión de proveedores. MAPOCA DIGITAL suma correo empresarial, dominios, SharePoint, OneDrive y automatización.",
+  },
+  {
+    q: "¿Qué hace MAPOCA si ya hubo un incidente?",
+    a: "Contiene primero: aísla el equipo o el segmento sin apagar la planta para investigar. Después distingue qué se detuvo —oficina, facturación u operación—, restaura desde un respaldo que ya se haya probado y deja escrito qué cambió. El seguimiento puede quedar en el servicio mensual o en un roadmap. No se promete un centro de operaciones permanente ni un tiempo de respuesta de catálogo: el alcance se escribe en la propuesta.",
   },
   {
     q: "¿Hace continuidad de negocio y recuperación ante desastres?",
@@ -604,7 +676,7 @@ ${pillars
 
 ## Defensa en capas
 
-La ciberseguridad se ordena en cuatro capas: identidad (MFA y mínimo privilegio), perímetro (firewall, VLAN y segmentación IT/OT), superficie (hardening y vulnerabilidades) y continuidad (respaldos probados y respuesta). En planta se usa el modelo Purdue: empresa, DMZ, sitio, control y proceso. Un diagnóstico revisa cuentas, caminos de red, qué se detiene en un incidente, si el respaldo se ha restaurado, qué proveedor tiene llaves y qué se corrige primero por impacto operativo.
+La ciberseguridad se ordena en cuatro capas: identidad (MFA, cuentas nominativas y acceso de proveedores con plazo), perímetro (firewall, VLAN y segmentación IT/OT), superficie (hardening y vulnerabilidades) y continuidad (respaldos restaurados de verdad y respuesta). En planta se usa el modelo Purdue: empresa, DMZ como único cruce, sitio, control y proceso. Un diagnóstico revisa cuentas, caminos de red, qué se detiene en un incidente, si el respaldo se ha restaurado, qué proveedor tiene llaves y qué se corrige primero por impacto operativo. Si ya hubo un incidente, el orden es contener sin apagar la planta, nombrar qué se detuvo, restaurar desde una copia probada y dejar el hallazgo escrito. MAPOCA no promete un centro de operaciones permanente ni un porcentaje de seguridad: el alcance se escribe en la propuesta.
 
 ## Servicios especializados
 
