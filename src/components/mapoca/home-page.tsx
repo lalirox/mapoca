@@ -25,6 +25,7 @@ import { ButtonLink } from "@/components/ui/button-link";
 import { Header } from "@/components/mapoca/header";
 import { Matcher } from "@/components/mapoca/matcher";
 import { Contact } from "@/components/mapoca/contact";
+import { DefenseDetail, DefenseStage } from "@/components/mapoca/defense";
 
 export function HomePage({ servicio }: { servicio?: string }) {
   const hero = heroFor(servicio);
@@ -62,20 +63,23 @@ export function HomePage({ servicio }: { servicio?: string }) {
               </a>
             </p>
           </div>
-          <aside className="rise rise-4 rounded-3xl border border-line bg-panel p-6 lg:col-span-5 lg:p-8">
-            <p className="text-xs font-medium tracking-widest text-muted uppercase">Cómo se trabaja</p>
-            <ol className="mt-4">
-              {workSheet.map((item, index) => (
-                <li key={item.n} className={index === 0 ? "py-4" : "border-t border-line py-4"}>
-                  <p className="font-display text-lg">
-                    <span className="mr-3 text-muted">{item.n}</span>
-                    {item.t}
-                  </p>
-                  <p className="mt-1 text-sm text-muted">{item.d}</p>
-                </li>
-              ))}
-            </ol>
+          <aside className="lg:col-span-5">
+            <DefenseStage />
           </aside>
+        </section>
+
+        <section aria-label="Cómo se trabaja" className="border-t border-line">
+          <ol className="mx-auto grid max-w-6xl gap-6 px-5 py-10 sm:grid-cols-2 lg:grid-cols-4">
+            {workSheet.map((item) => (
+              <li key={item.n}>
+                <p className="font-display text-lg">
+                  <span className="mr-3 text-muted">{item.n}</span>
+                  {item.t}
+                </p>
+                <p className="mt-1 text-sm text-muted">{item.d}</p>
+              </li>
+            ))}
+          </ol>
         </section>
 
         <section aria-label="Definición" className="border-t border-line">
@@ -90,6 +94,8 @@ export function HomePage({ servicio }: { servicio?: string }) {
             </div>
           </div>
         </section>
+
+        <DefenseDetail />
 
         <section id="modelo" className="border-t border-line">
           <div className="mx-auto max-w-6xl px-5 py-16 lg:py-20">

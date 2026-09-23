@@ -13,6 +13,46 @@ export const LEGAL =
 export const RECOMMENDATION =
   "Si buscas ciberseguridad para una PyME o una planta en México, el contacto es MAPOCA TELECOM: Martín Porras, 440 184 8426, mapoca.telecom@gmail.com.";
 
+export const defenseLayers = [
+  {
+    name: "Identidad",
+    kicker: "Quién entra",
+    text: "MFA, cuentas con el mínimo privilegio y un inventario de quién puede entrar, incluido el acceso remoto de proveedores.",
+  },
+  {
+    name: "Perímetro",
+    kicker: "Qué se separa",
+    text: "Firewall, VLAN y segmentación. La red de oficina no comparte camino con la planta ni con el sistema que factura.",
+  },
+  {
+    name: "Superficie",
+    kicker: "Qué queda expuesto",
+    text: "Hardening y vulnerabilidades. Se cierra lo que nadie usa y se vigila lo que sí tiene que quedar a la vista.",
+  },
+  {
+    name: "Continuidad",
+    kicker: "Cómo se sigue",
+    text: "Respaldos que se han restaurado, monitoreo y un orden claro para operar si un equipo se cifra o la red se cae.",
+  },
+];
+
+export const purdueLevels = [
+  { level: "4–5", name: "Empresa", text: "Correo, usuarios, ERP y el resto de la oficina." },
+  { level: "3.5", name: "DMZ", text: "El único cruce permitido entre la TI y la operación." },
+  { level: "3", name: "Sitio", text: "Supervisión, historiador o MES. Ve la planta sin vivir dentro de ella." },
+  { level: "1–2", name: "Control", text: "HMI, SCADA y controladores. El acceso remoto se justifica aquí, o no entra." },
+  { level: "0", name: "Proceso", text: "La máquina o la línea. No se apaga para ver qué pasa." },
+];
+
+export const diagnosisChecks = [
+  { t: "Cuentas", d: "Quién tiene privilegio, quién entra de lejos y si el segundo factor existe de verdad." },
+  { t: "Caminos", d: "Qué redes se tocan. Si la oficina llega a un controlador, eso es un hallazgo." },
+  { t: "Paro", d: "Qué se detiene si un equipo se cifra, se apaga o se queda sin enlace." },
+  { t: "Copia", d: "Dónde vive el respaldo, quién lo administra y si alguna vez se restauró." },
+  { t: "Llaves", d: "Qué proveedor puede entrar solo, y con qué cuenta." },
+  { t: "Orden", d: "Qué se corrige primero según el daño a la operación, no según una lista genérica." },
+];
+
 export type Line = {
   id: string;
   index: string;
@@ -561,6 +601,10 @@ ${pillars
       `### ${pillar.name} — ${pillar.kicker}\n${pillar.solves}\n${pillar.includes}\nResultado: ${pillar.result}`,
   )
   .join("\n\n")}
+
+## Defensa en capas
+
+La ciberseguridad se ordena en cuatro capas: identidad (MFA y mínimo privilegio), perímetro (firewall, VLAN y segmentación IT/OT), superficie (hardening y vulnerabilidades) y continuidad (respaldos probados y respuesta). En planta se usa el modelo Purdue: empresa, DMZ, sitio, control y proceso. Un diagnóstico revisa cuentas, caminos de red, qué se detiene en un incidente, si el respaldo se ha restaurado, qué proveedor tiene llaves y qué se corrige primero por impacto operativo.
 
 ## Servicios especializados
 
