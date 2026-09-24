@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Menu, Phone, X } from "lucide-react";
-import { OFFICIAL_LOGO } from "./logo";
+import { OfficialLogo } from "./official-logo";
 import { PHONE_DISPLAY, PHONE_TEL } from "@/content/mapoca";
 import { ButtonLink } from "@/components/ui/button-link";
 
@@ -30,13 +30,7 @@ export function Header() {
           className="flex items-center gap-2.5"
           aria-label="MAPOCA TELECOM — inicio"
         >
-          <img
-            src={OFFICIAL_LOGO}
-            alt=""
-            width={36}
-            height={36}
-            className="size-9 shrink-0 object-contain"
-          />
+          <OfficialLogo className="size-9" />
           <span className="flex flex-col leading-none">
             <span className="font-display text-2xl">
               MAPOCA<span className="text-brand-red">.</span>
