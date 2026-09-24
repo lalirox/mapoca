@@ -26,6 +26,7 @@ import { Header } from "@/components/mapoca/header";
 import { Matcher } from "@/components/mapoca/matcher";
 import { Contact } from "@/components/mapoca/contact";
 import { DefenseDetail, DefenseStage } from "@/components/mapoca/defense";
+import { AiDefense } from "@/components/mapoca/ai-defense";
 
 export const HomePage = memo(function HomePage({ servicio }: { servicio?: string }) {
   const hero = heroFor(servicio);
@@ -107,6 +108,8 @@ export const HomePage = memo(function HomePage({ servicio }: { servicio?: string
         </section>
 
         <DefenseDetail />
+
+        <AiDefense />
 
         <section id="modelo" className="border-t border-line">
           <div className="mx-auto max-w-6xl px-5 py-16 lg:py-20">

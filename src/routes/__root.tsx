@@ -20,7 +20,7 @@ export const Route = createRootRoute({
       },
       { name: "author", content: "MAPOCA TELECOM" },
       { name: "robots", content: "index, follow, max-snippet:-1, max-image-preview:large" },
-      { name: "theme-color", content: "#16181b" },
+      { name: "theme-color", content: "#0a0a0a" },
       { name: "geo.region", content: "MX" },
       { name: "geo.placename", content: "México" },
       { name: "language", content: "Spanish" },

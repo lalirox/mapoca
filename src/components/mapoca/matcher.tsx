@@ -11,6 +11,14 @@ const sizes: { id: Size; label: string; hint: string }[] = [
 // Mapa id → línea: lookup O(1) en lugar de lines.find(...) en cada render.
 const lineById = new Map(lines.map((line) => [line.id, line]));
 
+const pains: { id: Pain; label: string }[] = [
+  { id: "orden", label: "Falta soporte, inventario y orden" },
+  { id: "riesgo", label: "Preocupa el fraude, el acceso o perder información" },
+  { id: "red", label: "La red falla o la infraestructura está por hacerse" },
+  { id: "datos", label: "Inventario, costos o ventas siguen en hojas de cálculo" },
+  { id: "ot", label: "Hay que proteger planta, SCADA o accesos remotos" },
+];
+
 export const Matcher = memo(function Matcher({
   onRecommend,
 }: {
