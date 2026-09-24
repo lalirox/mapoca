@@ -3,7 +3,7 @@ import { heroFor, schemaJson } from "@/content/mapoca";
 import { HomePage } from "@/components/mapoca/home-page";
 
 const DESCRIPTION =
-  "Ciberseguridad para PyMEs e industria en México: empresa hackeada, ransomware, clonación de identidad, phishing, IT/OT y ERP. MAPOCA TELECOM. Martín Porras, 440 184 8426.";
+  "Ciberseguridad para PyMEs e industria en México: empresa hackeada, ransomware, clonación de identidad, phishing, riesgos de la IA, deepfakes, capacitaciones en pensamiento crítico, IT/OT y ERP. MAPOCA TELECOM. Martín Porras, 440 184 8426.";
 
 export const Route = createFileRoute("/")({
   validateSearch: (search: Record<string, unknown>) => {

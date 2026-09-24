@@ -10,14 +10,17 @@
   --font-sans: "Outfit", "Liberation Sans", ui-sans-serif, system-ui, sans-serif;
   --font-display: "Newsreader", "Liberation Serif", Georgia, serif;
 
-  --color-paper: #f4f3f0;
-  --color-ink: #16181b;
+  --color-paper: #ffffff;
+  --color-ink: #111113;
   --color-muted: #5c656e;
-  --color-line: #e4e0d8;
-  --color-panel: #fffcf8;
-  --color-steel: #3d5160;
-  --color-inverse: #121416;
-  --color-inverse-fg: #f4f3f0;
+  --color-line: #e6e4e2;
+  --color-panel: #ffffff;
+  /* Rojo del logo oficial (public/mapoca_corp.png): negro + rojo + blanco. */
+  --color-steel: #c1121f;
+  --color-brand-red: #c1121f;
+  --color-brand-red-dark: #8f0e18;
+  --color-inverse: #0a0a0a;
+  --color-inverse-fg: #ffffff;
   --color-inverse-muted: #c4c0b8;
   --color-inverse-line: #2c3136;
 

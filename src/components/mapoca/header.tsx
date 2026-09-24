@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { Menu, Phone, X } from "lucide-react";
+import { OfficialLogo } from "./official-logo";
 import { PHONE_DISPLAY, PHONE_TEL } from "@/content/mapoca";
 import { ButtonLink } from "@/components/ui/button-link";
 
 const links = [
   { href: "#incidentes", label: "Incidentes" },
   { href: "#defensa", label: "Defensa" },
+  { href: "#ia", label: "Riesgos IA" },
   { href: "#servicios", label: "Servicios" },
   { href: "#preguntas", label: "Preguntas" },
   { href: "#contacto", label: "Contacto" },
@@ -23,19 +25,36 @@ export function Header() {
         Saltar al contenido
       </a>
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-5">
-        <a href="#inicio" className="flex items-baseline gap-2">
-          <span className="font-display text-2xl leading-none">MAPOCA</span>
-          <span className="text-xs font-medium tracking-widest text-muted">TELECOM</span>
+        <a
+          href="#inicio"
+          className="flex items-center gap-2.5"
+          aria-label="MAPOCA TELECOM — inicio"
+        >
+          <OfficialLogo className="size-9" />
+          <span className="flex flex-col leading-none">
+            <span className="font-display text-2xl">
+              MAPOCA<span className="text-brand-red">.</span>
+            </span>
+            <span className="mt-1 text-[10px] font-medium tracking-widest text-muted">TELECOM</span>
+          </span>
         </a>
         <nav aria-label="Secciones" className="hidden items-center gap-6 md:flex">
           {links.map((link) => (
-            <a key={link.href} href={link.href} className="text-sm font-medium text-muted hover:text-ink">
+            <a
+              key={link.href}
+              href={link.href}
+              className="text-sm font-medium text-muted hover:text-ink"
+            >
               {link.label}
             </a>
           ))}
         </nav>
         <div className="flex items-center gap-2">
-          <ButtonLink href={`tel:${PHONE_TEL}`} className="hidden md:inline-flex" aria-label={`Llamar al ${PHONE_DISPLAY}`}>
+          <ButtonLink
+            href={`tel:${PHONE_TEL}`}
+            className="hidden md:inline-flex"
+            aria-label={`Llamar al ${PHONE_DISPLAY}`}
+          >
             <Phone className="size-4" aria-hidden="true" />
             {PHONE_DISPLAY}
           </ButtonLink>
@@ -54,12 +73,20 @@ export function Header() {
             onClick={() => setOpen((value) => !value)}
           >
             <span className="sr-only">{open ? "Cerrar menú" : "Abrir menú"}</span>
-            {open ? <X className="size-4" aria-hidden="true" /> : <Menu className="size-4" aria-hidden="true" />}
+            {open ? (
+              <X className="size-4" aria-hidden="true" />
+            ) : (
+              <Menu className="size-4" aria-hidden="true" />
+            )}
           </button>
         </div>
       </div>
       {open ? (
-        <nav id="menu-movil" aria-label="Secciones" className="border-t border-line px-5 py-3 md:hidden">
+        <nav
+          id="menu-movil"
+          aria-label="Secciones"
+          className="border-t border-line px-5 py-3 md:hidden"
+        >
           {links.map((link) => (
             <a
               key={link.href}

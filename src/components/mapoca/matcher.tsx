@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import { lines, recommend, type Pain, type Size } from "@/content/mapoca";
 import { ButtonLink } from "@/components/ui/button-link";
 
@@ -8,6 +8,9 @@ const sizes: { id: Size; label: string; hint: string }[] = [
   { id: "planta", label: "Planta o almacén", hint: "La operación no puede parar." },
 ];
 
+// Mapa id → línea: lookup O(1) en lugar de lines.find(...) en cada render.
+const lineById = new Map(lines.map((line) => [line.id, line]));
+
 const pains: { id: Pain; label: string }[] = [
   { id: "orden", label: "Falta soporte, inventario y orden" },
   { id: "riesgo", label: "Preocupa el fraude, el acceso o perder información" },
@@ -16,14 +19,18 @@ const pains: { id: Pain; label: string }[] = [
   { id: "ot", label: "Hay que proteger planta, SCADA o accesos remotos" },
 ];
 
-export function Matcher({ onRecommend }: { onRecommend: (lineName: string) => void }) {
+export const Matcher = memo(function Matcher({
+  onRecommend,
+}: {
+  onRecommend: (lineName: string) => void;
+}) {
   const [size, setSize] = useState<Size | null>(null);
   const [pain, setPain] = useState<Pain | null>(null);
   const [show, setShow] = useState(false);
   const resultRef = useRef<HTMLDivElement>(null);
 
   const result = size && pain && show ? recommend(size, pain) : null;
-  const line = result ? lines.find((item) => item.id === result.lineId) : undefined;
+  const line = result ? lineById.get(result.lineId) : undefined;
 
   useEffect(() => {
     if (!line) return;
@@ -37,7 +44,8 @@ export function Matcher({ onRecommend }: { onRecommend: (lineName: string) => vo
         <p className="text-xs font-medium tracking-widest text-muted uppercase">Orientación</p>
         <h2 className="mt-3 font-display text-4xl leading-display">Qué línea encaja</h2>
         <p className="mt-4 max-w-md text-muted">
-          Dos preguntas para ubicar el punto de partida. La propuesta real sale del diagnóstico, no de este recuadro.
+          Dos preguntas para ubicar el punto de partida. La propuesta real sale del diagnóstico, no
+          de este recuadro.
         </p>
       </div>
       <div className="lg:col-span-7">
@@ -62,7 +70,13 @@ export function Matcher({ onRecommend }: { onRecommend: (lineName: string) => vo
                   }
                 >
                   <span className="block text-sm font-semibold">{item.label}</span>
-                  <span className={active ? "mt-1 block text-sm text-inverse-muted" : "mt-1 block text-sm text-muted"}>
+                  <span
+                    className={
+                      active
+                        ? "mt-1 block text-sm text-inverse-muted"
+                        : "mt-1 block text-sm text-muted"
+                    }
+                  >
                     {item.hint}
                   </span>
                 </button>
@@ -136,4 +150,4 @@ export function Matcher({ onRecommend }: { onRecommend: (lineName: string) => vo
       </div>
     </div>
   );
-}
+});
