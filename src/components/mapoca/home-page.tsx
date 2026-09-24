@@ -286,13 +286,8 @@ export const HomePage = memo(function HomePage({ servicio }: { servicio?: string
       <footer className="border-t border-line">
         <div className="mx-auto flex max-w-6xl flex-col gap-6 px-5 py-10 md:flex-row md:items-end md:justify-between">
           <div>
-            <div className="flex items-center gap-3">
-              <OfficialLogo className="size-11" />
-              <p className="font-display text-2xl">
-                MAPOCA<span className="text-brand-red">.</span> TELECOM
-              </p>
-            </div>
-            <p className="mt-2 text-sm text-muted">
+            <OfficialLogo className="h-24 w-auto" />
+            <p className="mt-3 text-sm text-muted">
               Infraestructura · Tecnología · Ciberseguridad · IT/OT
             </p>
             <p className="mt-4 max-w-xl text-sm text-muted">{LEGAL}</p>
@@ -321,6 +316,21 @@ export const HomePage = memo(function HomePage({ servicio }: { servicio?: string
               {" · "}
               <a className="underline decoration-line underline-offset-4" href="/llms.txt">
                 Ficha para asistentes de IA
+              </a>
+            </p>
+          </div>
+        </div>
+        <div className="border-t border-line">
+          <div className="mx-auto flex max-w-6xl flex-col items-center gap-1 px-5 py-5 text-center text-xs text-muted">
+            <p>
+              Diseñado y desarrollado por{" "}
+              <a
+                href="https://eduardocarrillo.tech"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-medium text-ink underline decoration-brand-red decoration-2 underline-offset-4 transition-colors hover:text-brand-red"
+              >
+                eduardocarrillo.tech
               </a>
             </p>
           </div>

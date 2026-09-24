@@ -24,19 +24,9 @@ export function Header() {
       >
         Saltar al contenido
       </a>
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-5">
-        <a
-          href="#inicio"
-          className="flex items-center gap-2.5"
-          aria-label="MAPOCA TELECOM — inicio"
-        >
-          <OfficialLogo className="size-9" />
-          <span className="flex flex-col leading-none">
-            <span className="font-display text-2xl">
-              MAPOCA<span className="text-brand-red">.</span>
-            </span>
-            <span className="mt-1 text-[10px] font-medium tracking-widest text-muted">TELECOM</span>
-          </span>
+      <div className="mx-auto flex h-20 max-w-6xl items-center justify-between gap-4 px-5">
+        <a href="#inicio" className="flex items-center" aria-label="MAPOCA TELECOM — inicio">
+          <OfficialLogo className="h-14 w-auto md:h-16" />
         </a>
         <nav aria-label="Secciones" className="hidden items-center gap-6 md:flex">
           {links.map((link) => (

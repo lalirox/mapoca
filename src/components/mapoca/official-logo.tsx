@@ -34,9 +34,9 @@ export function OfficialLogo({ className = "size-9" }: { className?: string }) {
   return (
     <img
       src={OFFICIAL_LOGO}
-      alt=""
-      width={36}
-      height={36}
+      alt="MAPOCA TELECOM — logo oficial"
+      width={969}
+      height={744}
       loading="eager"
       decoding="async"
       onError={() => setFailed(true)}
