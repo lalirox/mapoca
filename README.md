@@ -13,4 +13,3 @@ Sitio de ciberseguridad, infraestructura y tecnología. El build genera el forma
 
 Cada push a `main` vuelve a desplegar.
 DIseñado por Eduardo Carrillo tech
-PAlpo
