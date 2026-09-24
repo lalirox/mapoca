@@ -19,7 +19,8 @@ try {
   // Resuelve en tiempo de build/dev si el PNG existe en /public.
   // eslint-disable-next-line @typescript-eslint/no-require-imports
   const { existsSync, statSync } = require("node:fs") as typeof import("node:fs");
-  const logoPath = new URL(`../public/mapoca_corp.png`, import.meta.url);
+  // __root.tsx vive en src/routes/, así que el public/ del proyecto está dos niveles arriba.
+  const logoPath = new URL(`../../public/mapoca_corp.png`, import.meta.url);
   if (existsSync(logoPath) && statSync(logoPath).size > 0) {
     LOGO_HREF = OFFICIAL_LOGO;
   }
