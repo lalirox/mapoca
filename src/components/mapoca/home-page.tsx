@@ -294,7 +294,9 @@ export const HomePage = memo(function HomePage({ servicio }: { servicio?: string
                 height={44}
                 className="size-11 shrink-0 object-contain"
               />
-              <p className="font-display text-2xl">MAPOCA TELECOM</p>
+              <p className="font-display text-2xl">
+                MAPOCA<span className="text-brand-red">.</span> TELECOM
+              </p>
             </div>
             <p className="mt-2 text-sm text-muted">
               Infraestructura · Tecnología · Ciberseguridad · IT/OT

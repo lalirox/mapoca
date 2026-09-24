@@ -49,7 +49,7 @@ export const AiDefense = memo(function AiDefense() {
       <div className="mx-auto max-w-6xl px-5 py-16 lg:py-20">
         <div className="grid gap-12 lg:grid-cols-12 lg:items-start">
           <div className="lg:col-span-5">
-            <p className="text-xs font-medium tracking-widest text-red-500 uppercase">
+            <p className="text-xs font-medium tracking-widest text-brand-red uppercase">
               Amenazas emergentes
             </p>
             <h2 className="mt-3 font-display text-4xl leading-display md:text-5xl">
@@ -76,9 +76,9 @@ export const AiDefense = memo(function AiDefense() {
             {threats.map((item) => (
               <article
                 key={item.title}
-                className="rounded-2xl border border-inverse-line bg-inverse p-5 transition-colors duration-150 ease-out hover:border-red-500"
+                className="rounded-2xl border border-inverse-line bg-inverse p-5 transition-colors duration-150 ease-out hover:border-brand-red"
               >
-                <span className="inline-flex size-10 items-center justify-center rounded-full bg-red-600 text-white">
+                <span className="inline-flex size-10 items-center justify-center rounded-full bg-brand-red text-inverse-fg">
                   <item.icon className="size-5" aria-hidden="true" />
                 </span>
                 <h3 className="mt-4 font-display text-2xl leading-display">{item.title}</h3>
@@ -89,7 +89,7 @@ export const AiDefense = memo(function AiDefense() {
         </div>
 
         <div className="mt-14 border-t border-inverse-line pt-10">
-          <p className="text-xs font-medium tracking-widest text-red-500 uppercase">
+          <p className="text-xs font-medium tracking-widest text-brand-red uppercase">
             Capacitaciones en pensamiento crítico
           </p>
           <h3 className="mt-3 max-w-2xl font-display text-3xl leading-display md:text-4xl">
@@ -98,7 +98,7 @@ export const AiDefense = memo(function AiDefense() {
           <div className="mt-8 grid gap-8 md:grid-cols-3">
             {training.map((item) => (
               <article key={item.step}>
-                <p className="font-display text-3xl text-red-500">{item.step}</p>
+                <p className="font-display text-3xl text-brand-red">{item.step}</p>
                 <h4 className="mt-3 font-display text-2xl leading-display">{item.title}</h4>
                 <p className="mt-2 text-sm text-inverse-muted">{item.text}</p>
               </article>

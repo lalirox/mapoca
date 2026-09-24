@@ -38,7 +38,9 @@ export function Header() {
             className="size-9 shrink-0 object-contain"
           />
           <span className="flex flex-col leading-none">
-            <span className="font-display text-2xl">MAPOCA</span>
+            <span className="font-display text-2xl">
+              MAPOCA<span className="text-brand-red">.</span>
+            </span>
             <span className="mt-1 text-[10px] font-medium tracking-widest text-muted">TELECOM</span>
           </span>
         </a>
