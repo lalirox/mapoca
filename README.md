@@ -12,4 +12,4 @@ Sitio de ciberseguridad, infraestructura y tecnología. El build genera el forma
 6. No configures `DATABASE_URL`. Esta página no guarda datos.
 
 Cada push a `main` vuelve a desplegar.
-DIseñado por Eduardo Carrillo tech
+DIseñado por Eduardo Carrillo tech para MApoca tech
