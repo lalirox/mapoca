@@ -18,8 +18,9 @@ let LOGO_HREF = LOGO_FALLBACK;
 try {
   // Resuelve en tiempo de build/dev si el PNG existe en /public.
   // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const { existsSync } = require("node:fs") as typeof import("node:fs");
-  if (existsSync(new URL(`../public/mapoca_corp.png`, import.meta.url))) {
+  const { existsSync, statSync } = require("node:fs") as typeof import("node:fs");
+  const logoPath = new URL(`../public/mapoca_corp.png`, import.meta.url);
+  if (existsSync(logoPath) && statSync(logoPath).size > 0) {
     LOGO_HREF = OFFICIAL_LOGO;
   }
 } catch {
