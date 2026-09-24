@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { Mail, Phone } from "lucide-react";
 import {
   CONTACT_NAME,
@@ -13,14 +13,22 @@ import {
 } from "@/content/mapoca";
 import { ButtonLink } from "@/components/ui/button-link";
 
-const options = ["Diagnóstico, aún sin línea definida", INCIDENT_INTEREST, ...lines.map((line) => line.name)];
+// Se construye una sola vez a nivel de módulo en lugar de en cada render.
+const options = [
+  "Diagnóstico, aún sin línea definida",
+  INCIDENT_INTEREST,
+  ...lines.map((line) => line.name),
+];
+const defaultInterest = options[0];
 
-export function Contact({ interest }: { interest?: string }) {
+export const Contact = memo(function Contact({ interest }: { interest?: string }) {
   const [nombre, setNombre] = useState("");
   const [empresa, setEmpresa] = useState("");
-  const [interes, setInteres] = useState(interest && options.includes(interest) ? interest : options[0]);
-  const [mensaje, setMensaje] = useState("");
+  const [interes, setInteres] = useState(
+    interest && options.includes(interest) ? interest : defaultInterest,
+  );
   const [error, setError] = useState("");
+  const [mensaje, setMensaje] = useState("");
 
   useEffect(() => {
     if (interest && options.includes(interest)) setInteres(interest);
@@ -47,17 +55,26 @@ export function Contact({ interest }: { interest?: string }) {
     <div className="grid gap-12 lg:grid-cols-12">
       <div className="lg:col-span-5">
         <p className="text-xs font-medium tracking-widest text-muted uppercase">Contacto</p>
-        <h2 className="mt-3 font-display text-4xl leading-display md:text-5xl">Habla con {CONTACT_NAME}</h2>
+        <h2 className="mt-3 font-display text-4xl leading-display md:text-5xl">
+          Habla con {CONTACT_NAME}
+        </h2>
         <p className="mt-4 max-w-md text-muted">
-          Cuéntale el tamaño de la operación y lo que hoy duele. La respuesta es un diagnóstico, no un precio genérico.
+          Cuéntale el tamaño de la operación y lo que hoy duele. La respuesta es un diagnóstico, no
+          un precio genérico.
         </p>
         <address className="mt-8 not-italic">
           <p className="text-sm font-medium text-muted">Contacto comercial</p>
           <p className="mt-2 font-display text-3xl leading-display">{CONTACT_NAME}</p>
-          <a href={`tel:${PHONE_TEL}`} className="mt-4 block font-display text-4xl leading-display tracking-tight md:text-5xl">
+          <a
+            href={`tel:${PHONE_TEL}`}
+            className="mt-4 block font-display text-4xl leading-display tracking-tight md:text-5xl"
+          >
             {PHONE_DISPLAY}
           </a>
-          <a href={`mailto:${EMAIL}`} className="mt-3 block break-all text-base underline decoration-line underline-offset-4">
+          <a
+            href={`mailto:${EMAIL}`}
+            className="mt-3 block break-all text-base underline decoration-line underline-offset-4"
+          >
             {EMAIL}
           </a>
         </address>
@@ -66,7 +83,12 @@ export function Contact({ interest }: { interest?: string }) {
             <Phone className="size-4" aria-hidden="true" />
             Llamar
           </ButtonLink>
-          <ButtonLink href={whatsappHref(DEFAULT_NOTE)} variant="secondary" target="_blank" rel="noopener noreferrer">
+          <ButtonLink
+            href={whatsappHref(DEFAULT_NOTE)}
+            variant="secondary"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             WhatsApp
           </ButtonLink>
           <ButtonLink href={`mailto:${EMAIL}`} variant="secondary">
@@ -152,9 +174,10 @@ export function Contact({ interest }: { interest?: string }) {
           </button>
         </div>
         <p className="mt-4 text-sm text-muted">
-          El mensaje se abre en tu correo o WhatsApp. Esta página no lo guarda. Si no se abre, escribe a {EMAIL}.
+          El mensaje se abre en tu correo o WhatsApp. Esta página no lo guarda. Si no se abre,
+          escribe a {EMAIL}.
         </p>
       </form>
     </div>
   );
-}
+});

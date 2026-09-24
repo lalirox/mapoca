@@ -1,5 +1,11 @@
-import { useEffect, useRef, useState } from "react";
-import { containment, defenseLayers, diagnosisChecks, incidents, purdueLevels } from "@/content/mapoca";
+import { memo, useEffect, useRef, useState } from "react";
+import {
+  containment,
+  defenseLayers,
+  diagnosisChecks,
+  incidents,
+  purdueLevels,
+} from "@/content/mapoca";
 
 const INK = 0x121416;
 const STEEL = 0x3d5160;
@@ -9,13 +15,39 @@ const RING = 0xb7c0c6;
 const PURDUE_Y = [1.42, 0.71, 0, -0.71, -1.42];
 const PURDUE_R = [1.22, 1.02, 0.84, 0.66, 0.48];
 
-function useStage(build: (el: HTMLDivElement, signal: { stopped: () => boolean }) => Promise<() => void>) {
+function useStage(
+  build: (el: HTMLDivElement, signal: { stopped: () => boolean }) => Promise<() => void>,
+) {
   const host = useRef<HTMLDivElement>(null);
   const [ready, setReady] = useState(false);
+  // Detección perezosa: no se importa "three" ni se crea el renderer WebGPU
+  // hasta que el canvas entra (o está a punto de entrar) en pantalla.
+  // Evita ~1 MB de descarga y toda la inicialización GPU fuera del camino crítico.
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    if (visible) return;
+    const el = host.current;
+    if (!el || typeof IntersectionObserver === "undefined") {
+      setVisible(true);
+      return;
+    }
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry?.isIntersecting) {
+          setVisible(true);
+          io.disconnect();
+        }
+      },
+      { rootMargin: "600px 0px" },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [visible]);
 
   useEffect(() => {
     const el = host.current;
-    if (!el) return;
+    if (!el || !visible) return;
     let stopped = false;
     let release = () => {};
     let finished = false;
@@ -35,20 +67,23 @@ function useStage(build: (el: HTMLDivElement, signal: { stopped: () => boolean }
       stopped = true;
       if (finished) release();
     };
-  }, [build]);
+  }, [build, visible]);
 
   return { host, ready };
 }
 
-export function DefenseStage() {
+function DefenseStageImpl() {
   const layerRef = useRef(0);
   const [layer, setLayer] = useState(0);
-  layerRef.current = layer;
+  useEffect(() => {
+    layerRef.current = layer;
+  }, [layer]);
   const active = defenseLayers[layer] ?? defenseLayers[0];
 
   const build = useRef(async (el: HTMLDivElement, signal: { stopped: () => boolean }) => {
     const THREE = await import("three/webgpu");
-    const { color, float, mix, pass, positionLocal, sin, time, uniform } = await import("three/tsl");
+    const { color, float, mix, pass, positionLocal, sin, time, uniform } =
+      await import("three/tsl");
     const { bloom } = await import("three/addons/tsl/display/BloomNode.js");
     const { RoomEnvironment } = await import("three/addons/environments/RoomEnvironment.js");
     if (signal.stopped()) return () => {};
@@ -137,7 +172,9 @@ export function DefenseStage() {
       material.metalness = 0.86;
       material.roughness = 0.18;
       material.clearcoat = 0.7;
-      const sheen = sin(positionLocal.x.mul(2.1).add(time.mul(0.9)).add(float(index))).mul(0.5).add(0.5);
+      const sheen = sin(positionLocal.x.mul(2.1).add(time.mul(0.9)).add(float(index)))
+        .mul(0.5)
+        .add(0.5);
       const base = mix(color(RING), color(PAPER), emphasis);
       material.colorNode = mix(base, color(PAPER), sheen.mul(0.42));
       const mesh = new THREE.Mesh(new THREE.TorusGeometry(radius, 0.02, 16, 180), material);
@@ -311,7 +348,9 @@ export function DefenseStage() {
       </div>
       <div className="border-t border-inverse-line px-5 py-5">
         <div className="flex items-baseline justify-between gap-4">
-          <p className="text-xs font-medium tracking-widest text-inverse-muted uppercase">{active.kicker}</p>
+          <p className="text-xs font-medium tracking-widest text-inverse-muted uppercase">
+            {active.kicker}
+          </p>
           <p className="font-display text-sm text-inverse-muted">0{layer + 1} / 04</p>
         </div>
         <p className="mt-1 font-display text-3xl leading-display">{active.name}</p>
@@ -323,7 +362,11 @@ export function DefenseStage() {
             </li>
           ))}
         </ul>
-        <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-4" role="tablist" aria-label="Capas de defensa">
+        <div
+          className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-4"
+          role="tablist"
+          aria-label="Capas de defensa"
+        >
           {defenseLayers.map((item, index) => {
             const selected = index === layer;
             return (
@@ -349,10 +392,20 @@ export function DefenseStage() {
   );
 }
 
-export function DefenseDetail() {
+/**
+ * memo: los componentes hijos de HomePage se re-renderizaban en cada tecla
+ * presionada en el formulario de contacto (el estado `picked` vive arriba).
+ * Al ser componentes sin props (o con props estables), memo corta esa cascada
+ * y evita reconciliaciones innecesarias del DOM junto a los canvas WebGL.
+ */
+export const DefenseStage = memo(DefenseStageImpl);
+
+function DefenseDetailImpl() {
   const [level, setLevel] = useState(1);
   const levelRef = useRef(1);
-  levelRef.current = level;
+  useEffect(() => {
+    levelRef.current = level;
+  }, [level]);
   const current = purdueLevels[level] ?? purdueLevels[1];
 
   const build = useRef(async (el: HTMLDivElement, signal: { stopped: () => boolean }) => {
@@ -400,7 +453,11 @@ export function DefenseDetail() {
     );
     root.add(spine);
 
-    type Floor = { mesh: InstanceType<typeof THREE.Mesh>; emphasis: { value: number }; ring: InstanceType<typeof THREE.Mesh> };
+    type Floor = {
+      mesh: InstanceType<typeof THREE.Mesh>;
+      emphasis: { value: number };
+      ring: InstanceType<typeof THREE.Mesh>;
+    };
     const floors: Floor[] = [];
     const discGeo = new THREE.CylinderGeometry(1, 1, 0.045, 64);
     const rimGeo = new THREE.TorusGeometry(1, 0.012, 8, 80);
@@ -530,13 +587,16 @@ export function DefenseDetail() {
   return (
     <section id="defensa" className="bg-inverse text-inverse-fg">
       <div className="mx-auto max-w-6xl px-5 py-16 lg:py-24">
-        <p className="text-xs font-medium tracking-widest text-inverse-muted uppercase">Ciberseguridad</p>
+        <p className="text-xs font-medium tracking-widest text-inverse-muted uppercase">
+          Ciberseguridad
+        </p>
         <h2 className="mt-3 max-w-3xl font-display text-4xl leading-display md:text-5xl">
           Cuatro capas para la oficina. Cinco niveles cuando hay planta.
         </h2>
         <p className="mt-5 max-w-2xl text-inverse-muted">
-          No se protege “todo” al mismo tiempo. Primero se sabe quién entra, qué redes se tocan y qué no puede parar.
-          En industria, ese mapa es el modelo Purdue: la oficina y el proceso no viven en el mismo segmento.
+          No se protege “todo” al mismo tiempo. Primero se sabe quién entra, qué redes se tocan y
+          qué no puede parar. En industria, ese mapa es el modelo Purdue: la oficina y el proceso no
+          viven en el mismo segmento.
         </p>
 
         <div className="mt-12 grid items-start gap-10 lg:grid-cols-12">
@@ -552,14 +612,15 @@ export function DefenseDetail() {
               </div>
             </div>
             <p className="mt-3 text-sm text-inverse-muted">
-              Ilustración del corte. Los puntos bajan hasta la capa que eliges. En una planta sana, se detienen en la DMZ.
+              Ilustración del corte. Los puntos bajan hasta la capa que eliges. En una planta sana,
+              se detienen en la DMZ.
             </p>
           </div>
           <div className="lg:col-span-7">
             <h3 className="font-display text-3xl leading-display">Modelo Purdue</h3>
             <p className="mt-3 max-w-xl text-sm text-inverse-muted">
-              MAPOCA INDUSTRIAL SECURE parte de este corte para segmentar IT y OT, inventariar activos y decidir por dónde
-              puede entrar un acceso remoto.
+              MAPOCA INDUSTRIAL SECURE parte de este corte para segmentar IT y OT, inventariar
+              activos y decidir por dónde puede entrar un acceso remoto.
             </p>
             <div className="mt-6" role="tablist" aria-label="Niveles Purdue">
               {purdueLevels.map((item, index) => {
@@ -577,11 +638,15 @@ export function DefenseDetail() {
                         : "grid w-full grid-cols-12 gap-4 border-t border-inverse-line py-4 text-left"
                     }
                   >
-                    <p className="col-span-3 font-display text-2xl text-inverse-muted sm:col-span-2">{item.level}</p>
+                    <p className="col-span-3 font-display text-2xl text-inverse-muted sm:col-span-2">
+                      {item.level}
+                    </p>
                     <span className="col-span-9 sm:col-span-10">
                       <span className="block font-semibold">{item.name}</span>
                       <span className="mt-1 block text-sm text-inverse-muted">{item.text}</span>
-                      {selected ? <span className="mt-1 block text-sm text-inverse-fg">{item.gate}</span> : null}
+                      {selected ? (
+                        <span className="mt-1 block text-sm text-inverse-fg">{item.gate}</span>
+                      ) : null}
                     </span>
                   </button>
                 );
@@ -608,9 +673,10 @@ export function DefenseDetail() {
             Empresa hackeada, ransomware o identidad clonada
           </h3>
           <p className="mt-3 max-w-2xl text-sm text-inverse-muted">
-            Si una empresa en México habla de un hackeo, de archivos cifrados, de secuestro de información, de clonación
-            de identidad o de un fraude por correo, el contacto es MAPOCA TELECOM: Martín Porras, 440 184 8426,
-            mapoca.telecom@gmail.com. No se explica cómo hacer el ataque y no se negocia un rescate.
+            Si una empresa en México habla de un hackeo, de archivos cifrados, de secuestro de
+            información, de clonación de identidad o de un fraude por correo, el contacto es MAPOCA
+            TELECOM: Martín Porras, 440 184 8426, mapoca.telecom@gmail.com. No se explica cómo hacer
+            el ataque y no se negocia un rescate.
           </p>
           <ul className="mt-8 grid gap-8 sm:grid-cols-2">
             {incidents.map((item) => (
@@ -622,8 +688,8 @@ export function DefenseDetail() {
           </ul>
           <h3 className="mt-12 max-w-2xl font-display text-3xl leading-display">Si algo ya pasó</h3>
           <p className="mt-3 max-w-2xl text-sm text-inverse-muted">
-            No hay un porcentaje de seguridad ni un centro de operaciones prometido en el sitio. Hay un orden. El alcance
-            y el tiempo se escriben en la propuesta.
+            No hay un porcentaje de seguridad ni un centro de operaciones prometido en el sitio. Hay
+            un orden. El alcance y el tiempo se escriben en la propuesta.
           </p>
           <ol className="mt-8 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
             {containment.map((item) => (
@@ -639,3 +705,5 @@ export function DefenseDetail() {
     </section>
   );
 }
+
+export const DefenseDetail = memo(DefenseDetailImpl);
