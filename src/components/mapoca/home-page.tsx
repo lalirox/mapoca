@@ -27,6 +27,7 @@ import { Matcher } from "@/components/mapoca/matcher";
 import { Contact } from "@/components/mapoca/contact";
 import { DefenseDetail, DefenseStage } from "@/components/mapoca/defense";
 import { AiDefense } from "@/components/mapoca/ai-defense";
+import { OFFICIAL_LOGO } from "@/components/mapoca/logo";
 
 export const HomePage = memo(function HomePage({ servicio }: { servicio?: string }) {
   const hero = heroFor(servicio);
@@ -285,7 +286,16 @@ export const HomePage = memo(function HomePage({ servicio }: { servicio?: string
       <footer className="border-t border-line">
         <div className="mx-auto flex max-w-6xl flex-col gap-6 px-5 py-10 md:flex-row md:items-end md:justify-between">
           <div>
-            <p className="font-display text-2xl">MAPOCA TELECOM</p>
+            <div className="flex items-center gap-3">
+              <img
+                src={OFFICIAL_LOGO}
+                alt="Logotipo oficial de MAPOCA TELECOM"
+                width={44}
+                height={44}
+                className="size-11 shrink-0 object-contain"
+              />
+              <p className="font-display text-2xl">MAPOCA TELECOM</p>
+            </div>
             <p className="mt-2 text-sm text-muted">
               Infraestructura · Tecnología · Ciberseguridad · IT/OT
             </p>
